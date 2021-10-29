@@ -6,6 +6,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import ru.itis.zagidullina.readl.config.ApplicationConfig;
 import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 import ru.itis.zagidullina.readl.repositories.AccountsRepositoryJdbcTemplateImpl;
+import ru.itis.zagidullina.readl.repositories.BookRepository;
+import ru.itis.zagidullina.readl.repositories.BookRepositoryJdbcTemplateImpl;
 import ru.itis.zagidullina.readl.services.*;
 
 import javax.servlet.ServletContext;
@@ -25,11 +27,16 @@ public class ServletListener implements ServletContextListener{
         servletContext.setAttribute("springContext", springContext);
 
         AccountsRepository accountsRepository = new AccountsRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
+        BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
 
         AuthService authService = new AuthServiceImpl(accountsRepository);
         servletContext.setAttribute("authService", authService);
+
         UsersService usersService = new UsersServiceImpl(accountsRepository);
         servletContext.setAttribute("usersService", usersService);
+
+        BookService bookService = new BookServiceImpl(bookRepository);
+        servletContext.setAttribute("bookService", bookService);
     }
 
     @Override

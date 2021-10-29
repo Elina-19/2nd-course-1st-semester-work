@@ -18,9 +18,11 @@ public class Book {
     private String imagePath;
     private Date dateOfAdding;
     private String description;
-    private Integer numberOfPages;
+    private Integer numberOfChapters;
     private Double rate;
     private Integer numberOfRates;
+    private Integer numberOfComments;
+    private Integer numberOfReviews;
 
     private List<Genre> genres;
     private List<Comment> comments;

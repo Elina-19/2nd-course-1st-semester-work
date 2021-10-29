@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("ru.itis.zagidullina.readl")
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 
     @Autowired

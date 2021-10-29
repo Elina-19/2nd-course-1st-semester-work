@@ -109,3 +109,17 @@ a{
 .profile-buttons{
     margin-left: 15%;
 }
+
+.form-add-book{
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 3px solid #f5a82c;
+}
+
+.new-book{
+    text-align: center;
+}
+
+.profile-book-buttons{
+    margin-left: 30%;
+}

@@ -12,6 +12,8 @@ public class Chapter {
     private String name;
     private Book book;
     private String contentPath;
+    private Long size;
+    private String mimeType;
 
     private List<Comment> comments;
 }

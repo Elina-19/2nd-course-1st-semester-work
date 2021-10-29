@@ -23,6 +23,14 @@
                     <div class="col-md-4"><label class="labels"></label><button class="btn">Followers</button></div>
                     <div class="col-md-4"><label class="labels"></label><button class="btn">Followers</button></div>
                 </div>
+                <div class="profile-book-buttons row mt-4">
+                    <div class="col-md-4">
+                        <button class="btn" type="button">
+                            <a href="<c:url value="/addBook"/>" id="addBook">Добавить книгу</a>
+                        </button>
+                    </div>
+                    <div class="col-md-4"><label class="labels"></label><button class="btn">Мои книги</button></div>
+                </div>
             </div>
         </div>
     </div>

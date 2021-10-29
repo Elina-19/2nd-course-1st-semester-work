@@ -36,11 +36,11 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public Account signIn(SignInForm signInForm) {
 
-        if(signInForm.getEmail() == null || patternEmpty.matcher(signInForm.getEmail()).find()){
+        if(signInForm.getEmail() == null || signInForm.getEmail().equals("") || patternEmpty.matcher(signInForm.getEmail()).find()){
             throw new NullPointerException("Введите email");
         }
 
-        if(signInForm.getPassword() == null || patternEmpty.matcher(signInForm.getPassword()).find()){
+        if(signInForm.getPassword() == null || signInForm.getPassword().equals("") || patternEmpty.matcher(signInForm.getPassword()).find()){
             throw new NullPointerException("Введите пароль");
         }
 
@@ -67,15 +67,15 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void signUp(SignUpForm signUpForm) {
 
-        if(signUpForm.getNickname() == null || patternEmpty.matcher(signUpForm.getNickname()).find()){
+        if(signUpForm.getNickname() == null || signUpForm.getNickname().equals("") || patternEmpty.matcher(signUpForm.getNickname()).find()){
             throw new NullPointerException("Введите ник");
         }
 
-        if(signUpForm.getEmail() == null || patternEmpty.matcher(signUpForm.getEmail()).find()){
+        if(signUpForm.getEmail() == null || signUpForm.getEmail().equals("") || patternEmpty.matcher(signUpForm.getEmail()).find()){
             throw new NullPointerException("Введите email");
         }
 
-        if(signUpForm.getPassword() == null || patternEmpty.matcher(signUpForm.getPassword()).find()){
+        if(signUpForm.getPassword() == null || signUpForm.getPassword().equals("") || patternEmpty.matcher(signUpForm.getPassword()).find()){
             throw new NullPointerException("Введите пароль");
         }
 
