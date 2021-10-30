@@ -14,6 +14,7 @@ public class Chapter {
     private String contentPath;
     private Long size;
     private String mimeType;
+    private Integer numberOfComments;
 
     private List<Comment> comments;
 }

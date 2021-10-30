@@ -26,16 +26,22 @@ public class ServletListener implements ServletContextListener{
         ServletContext servletContext = servletContextEvent.getServletContext();
         servletContext.setAttribute("springContext", springContext);
 
+        String storagePath = "C:\\files\\";
+        servletContext.setAttribute("storagePath", storagePath);
+
+        Validator validator = new Validator();
+        servletContext.setAttribute("validator", validator);
+
         AccountsRepository accountsRepository = new AccountsRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
         BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
 
-        AuthService authService = new AuthServiceImpl(accountsRepository);
+        AuthService authService = new AuthServiceImpl(accountsRepository, validator);
         servletContext.setAttribute("authService", authService);
 
-        UsersService usersService = new UsersServiceImpl(accountsRepository);
+        AccountsService usersService = new AccountsServiceImpl(accountsRepository);
         servletContext.setAttribute("usersService", usersService);
 
-        BookService bookService = new BookServiceImpl(bookRepository);
+        BookService bookService = new BookServiceImpl(bookRepository, validator, storagePath);
         servletContext.setAttribute("bookService", bookService);
     }
 

@@ -4,7 +4,7 @@ import ru.itis.zagidullina.readl.models.Account;
 
 import java.util.List;
 
-public interface UsersService {
+public interface AccountsService {
     Account findByEmail(String email);
     List<Account> findAll();
 }

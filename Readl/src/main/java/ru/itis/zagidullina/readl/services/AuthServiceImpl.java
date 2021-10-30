@@ -20,27 +20,26 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
 public class AuthServiceImpl implements AuthService{
 
     private AccountsRepository accountsRepository;
+    private Validator validator;
 
-    private static final Pattern patternEmpty = Pattern.compile("\\s+");
     private static final Pattern patternEmail = Pattern.compile("[A-Za-z0-9_+-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,6}");
 
-    @Autowired
-    public AuthServiceImpl(AccountsRepository accountsRepository){
+    public AuthServiceImpl(AccountsRepository accountsRepository, Validator validator){
         this.accountsRepository = accountsRepository;
+        this.validator = validator;
     }
 
     @Override
     public Account signIn(SignInForm signInForm) {
 
-        if(signInForm.getEmail() == null || signInForm.getEmail().equals("") || patternEmpty.matcher(signInForm.getEmail()).find()){
+        if(validator.isNull(signInForm.getEmail()) || validator.isEmpty(signInForm.getEmail())){
             throw new NullPointerException("Введите email");
         }
 
-        if(signInForm.getPassword() == null || signInForm.getPassword().equals("") || patternEmpty.matcher(signInForm.getPassword()).find()){
+        if(validator.isNull(signInForm.getPassword()) || validator.isEmpty(signInForm.getPassword())){
             throw new NullPointerException("Введите пароль");
         }
 
@@ -67,15 +66,15 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void signUp(SignUpForm signUpForm) {
 
-        if(signUpForm.getNickname() == null || signUpForm.getNickname().equals("") || patternEmpty.matcher(signUpForm.getNickname()).find()){
+        if(validator.isNull(signUpForm.getNickname()) || validator.isEmpty(signUpForm.getNickname())){
             throw new NullPointerException("Введите ник");
         }
 
-        if(signUpForm.getEmail() == null || signUpForm.getEmail().equals("") || patternEmpty.matcher(signUpForm.getEmail()).find()){
+        if(validator.isNull(signUpForm.getEmail()) || validator.isEmpty(signUpForm.getEmail())){
             throw new NullPointerException("Введите email");
         }
 
-        if(signUpForm.getPassword() == null || signUpForm.getPassword().equals("") || patternEmpty.matcher(signUpForm.getPassword()).find()){
+        if(validator.isNull(signUpForm.getPassword()) || validator.isEmpty(signUpForm.getPassword())){
             throw new NullPointerException("Введите пароль");
         }
 

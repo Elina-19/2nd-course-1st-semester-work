@@ -8,13 +8,11 @@ import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UsersServiceImpl implements UsersService {
+public class AccountsServiceImpl implements AccountsService {
 
     private final AccountsRepository accountsRepository;
 
-    @Autowired
-    public UsersServiceImpl(AccountsRepository accountsRepository){
+    public AccountsServiceImpl(AccountsRepository accountsRepository){
         this.accountsRepository = accountsRepository;
     }
 

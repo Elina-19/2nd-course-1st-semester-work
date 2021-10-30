@@ -29,7 +29,11 @@
                             <a href="<c:url value="/addBook"/>" id="addBook">Добавить книгу</a>
                         </button>
                     </div>
-                    <div class="col-md-4"><label class="labels"></label><button class="btn">Мои книги</button></div>
+                    <div class="col-md-4">
+                        <button class="btn" type="button">
+                            <a href="<c:url value="/myBooks?id=${account.id}"/>" id="myBook">Мои книги</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

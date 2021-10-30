@@ -17,31 +17,32 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-@Service
 public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
+    private Validator validator;
 
-    private static final Pattern patternEmpty = Pattern.compile("\\s+");
     private String storagePath;
 
-    public BookServiceImpl(BookRepository bookRepository){
+    public BookServiceImpl(BookRepository bookRepository, Validator validator, String storagePath){
         this.bookRepository = bookRepository;
-        storagePath = "C:\\files\\";
+        this.validator = validator;
+        this.storagePath = storagePath;
     }
 
     @Override
     public void save(AddBookForm addBookForm, Account account, InputStream fileInputStream) {
-        if(addBookForm.getName() == null || addBookForm.getName().equals("") || patternEmpty.matcher(addBookForm.getName()).find()){
+        if(validator.isNull(addBookForm.getName()) || validator.isEmpty(addBookForm.getName())){
             throw new EmptyFieldException("Введите название книги");
         }
 
-        if(addBookForm.getDescription() == null || addBookForm.getDescription().equals("") || patternEmpty.matcher(addBookForm.getDescription()).find()){
+        if(validator.isNull(addBookForm.getDescription()) || validator.isEmpty(addBookForm.getDescription())){
             throw new EmptyFieldException("Введите описание");
         }
 
         String pathToBook = getUniqName(addBookForm.getName());
         new File(Paths.get(storagePath, pathToBook).toString()).mkdir();
+
         String imagePath = null;
 
         if(addBookForm.getSize() != 0){
@@ -53,6 +54,11 @@ public class BookServiceImpl implements BookService {
                 .name(addBookForm.getName())
                 .description(addBookForm.getDescription())
                 .imagePath(imagePath)
+                .numberOfComments(0)
+                .numberOfRates(0)
+                .numberOfReviews(0)
+                .pathToDirectoryWithContent(pathToBook)
+                .rate(0.0)
                 .build();
 
         bookRepository.save(book);
@@ -65,7 +71,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findBooksOfAccount(Integer id) {
-        return null;
+        return bookRepository.findBooksOfAccount(id);
     }
 
     @Override

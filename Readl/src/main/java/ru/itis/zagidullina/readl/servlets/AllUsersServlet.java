@@ -1,10 +1,8 @@
 package ru.itis.zagidullina.readl.servlets;
 
 import org.springframework.context.ApplicationContext;
-import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.models.Book;
-import ru.itis.zagidullina.readl.models.Comment;
-import ru.itis.zagidullina.readl.services.UsersService;
+import ru.itis.zagidullina.readl.services.AccountsService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -18,14 +16,14 @@ import java.io.IOException;
 @WebServlet("/allusers")
 public class AllUsersServlet extends HttpServlet {
 
-    private UsersService profileService;
+    private AccountsService profileService;
     private ServletContext servletContext;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         servletContext = config.getServletContext();
         ApplicationContext applicationContext = (ApplicationContext)servletContext.getAttribute("springContext");
-        profileService = applicationContext.getBean(UsersService.class);
+        profileService = applicationContext.getBean(AccountsService.class);
     }
 
     @Override
