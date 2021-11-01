@@ -14,7 +14,6 @@ import ru.itis.zagidullina.readl.models.Account;
 import javax.sql.DataSource;
 import java.util.*;
 
-@Repository
 public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
 
     //language=SQl
@@ -23,6 +22,9 @@ public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
 
     //language=SQL
     private static final String SQL_FIND_BY_EMAIl = "select id, uuid, nickname, email, password, image_path from account where account.email = :email";
+
+    //language=SQL
+    private static final String SQL_FIND_BY_ID = "select id, uuid, nickname, email, password, image_path from account where account.id = :id";
 
     //language=SQL
     private static final String SQL_SELECT_ALL = "select * from account order by id";
@@ -67,6 +69,17 @@ public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
         try{
             return Optional.of(namedParameterJdbcTemplate.queryForObject(SQL_FIND_BY_EMAIl,
                     Collections.singletonMap("email", email), accountRowMapper));
+        }
+        catch (EmptyResultDataAccessException e){
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Account> findById(Integer id) {
+        try{
+            return Optional.of(namedParameterJdbcTemplate.queryForObject(SQL_FIND_BY_ID,
+                    Collections.singletonMap("id", id), accountRowMapper));
         }
         catch (EmptyResultDataAccessException e){
             return Optional.empty();

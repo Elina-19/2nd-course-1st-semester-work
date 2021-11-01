@@ -48,6 +48,8 @@ public class AddBookServlet extends HttpServlet {
 
         Account account = (Account) request.getSession().getAttribute("account");
 
+        System.out.println(addBookForm.getName());
+        System.out.println(addBookForm.getDescription());
         try{
             bookService.save(addBookForm, account, part.getInputStream());
             response.sendRedirect(servletContext.getContextPath() + "/profile");

@@ -25,11 +25,19 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Book book = bookService.findById(Integer.valueOf(request.getParameter("id")));
-        if (book == null){
-            request.setAttribute("message", "Такой книги нет");
-        }else{
+        try {
+            Book book = bookService.findById(Integer.valueOf(request.getParameter("id")));
+
+            if (book.getChapters().size() == 0){
+                request.setAttribute("chapters", "Нет глав");
+            }
+            if(book.getGenres().size() == 0){
+                book.setGenres(null);
+            }
+
             request.setAttribute("book", book);
+        }catch (IllegalArgumentException e){
+            request.setAttribute("message", e.getMessage());
         }
 
         HttpSession session = request.getSession(false);

@@ -4,10 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.itis.zagidullina.readl.config.ApplicationConfig;
-import ru.itis.zagidullina.readl.repositories.AccountsRepository;
-import ru.itis.zagidullina.readl.repositories.AccountsRepositoryJdbcTemplateImpl;
-import ru.itis.zagidullina.readl.repositories.BookRepository;
-import ru.itis.zagidullina.readl.repositories.BookRepositoryJdbcTemplateImpl;
+import ru.itis.zagidullina.readl.repositories.*;
 import ru.itis.zagidullina.readl.services.*;
 
 import javax.servlet.ServletContext;
@@ -33,8 +30,12 @@ public class ServletListener implements ServletContextListener{
         servletContext.setAttribute("validator", validator);
 
         AccountsRepository accountsRepository = new AccountsRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
-        
-        BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
+        ChapterRepository chapterRepository = new ChapterRepositoryImpl(springContext.getBean(HikariDataSource.class));
+        CommentsRepository commentsRepository = new CommentsRepositoryImpl(springContext.getBean(HikariDataSource.class));
+        ReviewsRepository reviewsRepository = new ReviewsRepositoryImpl(springContext.getBean(HikariDataSource.class));
+        GenreRepository genreRepository = new GenreRepositoryImpl(springContext.getBean(HikariDataSource.class));
+
+        BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class), accountsRepository, chapterRepository, commentsRepository, reviewsRepository, genreRepository);
 
         AuthService authService = new AuthServiceImpl(accountsRepository, validator);
         servletContext.setAttribute("authService", authService);

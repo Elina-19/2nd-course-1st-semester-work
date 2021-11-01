@@ -11,8 +11,9 @@
 
 <t:layout>
     <c:if test="${message != null}">
-        <h1>${message}</h1>
+        <h1 class="message">${message}</h1>
     </c:if>
+    <c:if test="${message == null}">
     <div class="book">
         <div class="row">
             <div class="col-md-4 border-right">
@@ -21,13 +22,13 @@
             <div class="col-md-8 border-right">
                 <div class="p-3 py-5">
                     <div class="row">
-                        <h5 class="col-6">${book.account.id}</h5>
+                        <h5 class="col-6">Автор: ${book.account.nickname}</h5>
                         <h5 class="col-6">${book.dateOfAdding}</h5>
                     </div>
                     <h4 class="name-book">${book.name}</h4>
                     <h2 class="book-describe">${book.description}</h2>
                     <div class="mt-2">
-                        <c:if test="${book.genres.size != 0}">
+                        <c:if test="${book.genres != null}">
                             <h5>Жанры: </h5>
                             <c:forEach items="${book.genres}" var="genre">
                                 <h6>${genre.name}</h6>
@@ -54,15 +55,18 @@
                 </div>
             </div>
         </div>
-        <div>
-            <c:if test="${book.chapters.size == 0}">
-                <h1>Нет глав</h1>
+        <div class="chapters mt-5">
+            <c:if test="${chapters != null}">
+                <h1 class="message">Нет глав</h1>
             </c:if>
-            <div class="chapters">
-                <c:forEach items="${book.chapters}" var="chapter">
-                    <h1 class="chapter">${chapter.name}</h1>
-                </c:forEach>
-            </div>
+            <c:if test="${book.chapters != null}">
+                <div>
+                    <c:forEach items="${book.chapters}" var="chapter">
+                        <h1 class="chapter">${chapter.name}</h1>
+                    </c:forEach>
+                </div>
+            </c:if>
         </div>
     </div>
+    </c:if>
 </t:layout>

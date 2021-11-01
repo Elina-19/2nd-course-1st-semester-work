@@ -69,8 +69,9 @@ public class BookServiceImpl implements BookService {
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         if (optionalBook.isPresent()){
-            return optionalBook.get();
-        }else return null;
+            Book book = optionalBook.get();
+            return book;
+        }else throw new IllegalArgumentException("Такой книги нет");
     }
 
     @Override

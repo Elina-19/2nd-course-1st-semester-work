@@ -22,6 +22,33 @@ create table book(
     number_of_reviews integer
 );
 
+create table chapter(
+    id serial primary key,
+    name varchar(50),
+    book_id int,
+    foreign key (book_id) references book(id),
+    content_path varchar(50),
+    mime_type varchar(20)
+);
+
+create table genre(
+    id serial primary key,
+    name varchar(20)
+);
+
+create table book_genre(
+    book_id int,
+    foreign key (book_id) references book(id),
+    genre_id int,
+    foreign key (genre_id) references genre(id)
+);
+
+select g.id, g.name from genre g
+inner join book_genre bg on g.id = bg.genre_id
+inner join book b on bg.book_id = b.id;
+
+select id, name, book_id, content_path, mime_type from chapter where chapter.book_id = :bookId;
+
 insert into book(name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews)
 values (:name, :accountId, :pathToContent, :imagePath, now(), :description, :rate, :numberOfRates, :numberOfComments, :numberOfReviews);
 

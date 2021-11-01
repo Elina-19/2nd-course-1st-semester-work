@@ -134,7 +134,7 @@ a{
 }
 
 .chapters{
-    padding: 5px 5px;
+    padding-left: 30%;
 }
 
 .chapter{
@@ -142,9 +142,13 @@ a{
 }
 
 .search{
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .book-buttons{
     margin-left: 15%;
+}
+
+.message{
+    text-align: center;
 }

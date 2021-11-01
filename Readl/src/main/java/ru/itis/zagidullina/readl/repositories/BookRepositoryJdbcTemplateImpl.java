@@ -2,6 +2,7 @@ package ru.itis.zagidullina.readl.repositories;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,12 +12,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.models.Book;
+import ru.itis.zagidullina.readl.models.Chapter;
+import ru.itis.zagidullina.readl.models.Genre;
 import ru.itis.zagidullina.readl.repositories.BookRepository;
 
 import javax.sql.DataSource;
 import java.util.*;
 
-@Repository
 public class BookRepositoryJdbcTemplateImpl implements BookRepository {
 
     //language=SQL
@@ -36,8 +38,19 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public BookRepositoryJdbcTemplateImpl(DataSource dataSource){
+    private AccountsRepository accountsRepository;
+    private ChapterRepository chapterRepository;
+    private GenreRepository genreRepository;
+    private CommentsRepository commentsRepository;
+    private ReviewsRepository reviewsRepository;
+
+    public BookRepositoryJdbcTemplateImpl(DataSource dataSource, AccountsRepository accountsRepository, ChapterRepository chapterRepository, CommentsRepository commentsRepository, ReviewsRepository reviewsRepository, GenreRepository genreRepository){
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.accountsRepository = accountsRepository;
+        this.chapterRepository = chapterRepository;
+        this.genreRepository = genreRepository;
+        this.commentsRepository = commentsRepository;
+        this.reviewsRepository = reviewsRepository;
     }
 
     private final RowMapper<Book> bookRowMapper = (row, rowNumber) -> Book.builder()
@@ -82,7 +95,16 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     public Optional<Book> findById(Integer id) {
         try {
             Book book =  jdbcTemplate.queryForObject(SQL_FIND_BY_ID, Collections.singletonMap("id", id), bookRowMapper);
-            Account account =
+
+            Account account = accountsRepository.findById(book.getAccount().getId()).get();
+            List<Chapter> chapters = chapterRepository.getChaptersOfBook(book.getId());
+            List<Genre> genres = genreRepository.findGenresOfBook(book.getId());
+
+            book.setAccount(account);
+            book.setChapters(chapters);
+            book.setGenres(genres);
+
+            return Optional.of(book);
         }catch (EmptyResultDataAccessException e){
             return Optional.empty();
         }

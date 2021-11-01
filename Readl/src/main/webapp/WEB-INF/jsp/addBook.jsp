@@ -22,6 +22,9 @@
                 <div class="col-md-8 border-right">
                     <div class="p-3 py-5">
                         <h4 class="new-book">Добавление книги</h4>
+                        <c:if test="${error != null}">
+                            <h5>${error}</h5>
+                        </c:if>
                         <div>
                             <label class="labels">Название книги</label>
                             <input class="form-control" name="name" placeholder="Название">

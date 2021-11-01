@@ -42,6 +42,7 @@ public class SignUpServlet extends HttpServlet {
 
         try{
             authService.signUp(signUpForm);
+            response.sendRedirect(servletContext.getContextPath() + "/signIn");
         }catch(NullPointerException e){
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/jsp/signUp.jsp").forward(request, response);
@@ -52,7 +53,5 @@ public class SignUpServlet extends HttpServlet {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/jsp/signUp.jsp").forward(request, response);
         }
-
-        response.sendRedirect(servletContext.getContextPath() + "/signIn");
     }
 }

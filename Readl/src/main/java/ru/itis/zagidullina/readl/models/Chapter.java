@@ -11,10 +11,10 @@ public class Chapter {
     private Integer id;
     private String name;
     private Book book;
+    private String content;
     private String contentPath;
     private Long size;
     private String mimeType;
-    private Integer numberOfComments;
 
     private List<Comment> comments;
 }
