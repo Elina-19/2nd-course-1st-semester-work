@@ -88,7 +88,7 @@ a{
 .name-of-book:hover{
     text-decoration: underline;
 }
-.search{
+.actions{
     margin-left: 50%;
 }
 
@@ -122,4 +122,29 @@ a{
 
 .profile-book-buttons{
     margin-left: 30%;
+}
+
+.book{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.name-book{
+    text-align: center;
+}
+
+.chapters{
+    padding: 5px 5px;
+}
+
+.chapter{
+    font-size: 2rem;
+}
+
+.search{
+    margin-top: 5px;
+}
+
+.book-buttons{
+    margin-left: 15%;
 }

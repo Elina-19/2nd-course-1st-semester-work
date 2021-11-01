@@ -65,8 +65,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findById() {
-        return Optional.empty();
+    public Book findById(Integer id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+
+        if (optionalBook.isPresent()){
+            return optionalBook.get();
+        }else return null;
     }
 
     @Override
@@ -90,5 +94,10 @@ public class BookServiceImpl implements BookService {
     private String getUniqName(String name){
         String result = Math.round(Math.random()*1000) + 7*Math.round(Math.random()*1000) + name;
         return result;
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 }

@@ -4,7 +4,7 @@
 
 <div class="container-fluid wrapper">
     <div class="external-book">
-        <img class="book-img" src="<c:url value="C:/files/${book.pathToDirectoryWithContent}/${book.imagePath}"/>"/>
+        <img class="book-img" src="<c:url value="https://cdn.eksmo.ru/v2/ASE000000000834477/COVER/cover1.jpg"/>"/>
         <div class="book-content">
             <button class="btn" type="button">
                 <a href="<c:url value="/book?id=${book.id}"/>">${book.name}</a>

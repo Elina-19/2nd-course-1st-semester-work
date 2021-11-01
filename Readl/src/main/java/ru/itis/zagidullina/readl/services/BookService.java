@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public interface BookService {
     void save(AddBookForm addBookForm, Account account, InputStream inputStream);
-    Optional<Book> findById();
+    Book findById(Integer id);
     List<Book> findBooksOfAccount(Integer id);
     String saveImage(String fileName, String directoryPath, InputStream inputStream);
+    List<Book> findAll();
 }

@@ -111,6 +111,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public void logout(HttpSession session) {
+        session.removeAttribute("account");
         session.removeAttribute("isAuthenticated");
     }
 }

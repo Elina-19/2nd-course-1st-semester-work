@@ -9,4 +9,5 @@ public interface BookRepository {
     void save(Book book);
     Optional<Book> findById(Integer id);
     List<Book> findBooksOfAccount(Integer id);
+    List<Book> findAll();
 }

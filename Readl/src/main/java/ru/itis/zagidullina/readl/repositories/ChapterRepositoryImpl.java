@@ -19,12 +19,17 @@ public class ChapterRepositoryImpl implements ChapterRepository {
     }
 
     @Override
-    public List<Chapter> getChaptersOfBook(Book book) {
+    public List<Chapter> getChaptersOfBook(Integer id) {
         return null;
     }
 
     @Override
     public Optional<Chapter> findById(Integer id) {
         return Optional.empty();
+    }
+
+    @Override
+    public void save(Chapter chapter) {
+
     }
 }

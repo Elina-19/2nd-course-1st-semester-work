@@ -28,6 +28,9 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
             "where book.id = :id";
 
     //language=SQL
+    private static final String SQL_FIND_ALL = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book";
+
+    //language=SQL
     private static final String SQL_FIND_BOOKS_OF_ACCOUNT_BY_ID = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book " +
             "where book.account_id = :id";
 
@@ -78,7 +81,8 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     @Override
     public Optional<Book> findById(Integer id) {
         try {
-            return Optional.of(jdbcTemplate.queryForObject(SQL_FIND_BY_ID, Collections.singletonMap("id", id), bookRowMapper));
+            Book book =  jdbcTemplate.queryForObject(SQL_FIND_BY_ID, Collections.singletonMap("id", id), bookRowMapper);
+            Account account =
         }catch (EmptyResultDataAccessException e){
             return Optional.empty();
         }
@@ -87,5 +91,10 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     @Override
     public List<Book> findBooksOfAccount(Integer id) {
         return jdbcTemplate.query(SQL_FIND_BOOKS_OF_ACCOUNT_BY_ID, Collections.singletonMap("id", id), bookRowMapper);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return jdbcTemplate.query(SQL_FIND_ALL, bookRowMapper);
     }
 }

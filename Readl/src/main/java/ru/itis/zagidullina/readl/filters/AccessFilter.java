@@ -1,5 +1,7 @@
 package ru.itis.zagidullina.readl.filters;
 
+import ru.itis.zagidullina.readl.services.BookService;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +13,7 @@ import java.io.IOException;
 public class AccessFilter implements Filter {
 
     private ServletContext servletContext;
-    private final String[] availablePaths = {"/signIn", "/signUp", "/logout"};
+    private final String[] availablePaths = {"/signIn", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,28 +26,28 @@ public class AccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String currentPath = request.getRequestURI().substring(servletContext.getContextPath().length());
-        for (String path: availablePaths) {
-            if (path.equals(currentPath)){
-                request.setAttribute("authenticated", false);
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
 
         HttpSession session = request.getSession(false);
 
-        boolean isAuthenticated;
+        Boolean isAuthenticated;
         try{
             isAuthenticated = (boolean)session.getAttribute("isAuthenticated");
         }catch(NullPointerException e){
             isAuthenticated = false;
         }
+        request.setAttribute("authenticated", isAuthenticated);
+
+        for (String path: availablePaths) {
+            if (path.equals(currentPath)){
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
 
         if (isAuthenticated){
-            request.setAttribute("authenticated", true);
             filterChain.doFilter(request, response);
         }else{
-            response.sendRedirect(servletContext.getContextPath() + "/signIn");
+            response.sendRedirect(servletContext.getContextPath() + "/main");
         }
     }
 

@@ -33,6 +33,7 @@ public class ServletListener implements ServletContextListener{
         servletContext.setAttribute("validator", validator);
 
         AccountsRepository accountsRepository = new AccountsRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
+        
         BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class));
 
         AuthService authService = new AuthServiceImpl(accountsRepository, validator);
