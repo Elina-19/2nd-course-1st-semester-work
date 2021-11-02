@@ -36,7 +36,14 @@
                         <br>
                         <div class="col-md-12">
                             <label class="labels">Жанры</label>
-                            <input type="text" class="form-control" placeholder="Добавьте жанры">
+                            <ul class="list-group">
+                                <li>
+                                    <c:forEach items="${genres}" var="genre">
+                                        <input type="checkbox" name="genre" value="${genre.id}">
+                                        ${genre.name}
+                                    </c:forEach>
+                                </li>
+                            </ul>
                         </div>
                         <div class="mt-5 text-center">
                             <input class="btn" type="submit" value="Добавить">

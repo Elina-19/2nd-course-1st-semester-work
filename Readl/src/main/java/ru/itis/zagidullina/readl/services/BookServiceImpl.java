@@ -1,37 +1,40 @@
 package ru.itis.zagidullina.readl.services;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import ru.itis.zagidullina.readl.dto.AddBookForm;
 import ru.itis.zagidullina.readl.exceptions.EmptyFieldException;
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.models.Book;
+import ru.itis.zagidullina.readl.models.Chapter;
+import ru.itis.zagidullina.readl.models.Genre;
 import ru.itis.zagidullina.readl.repositories.BookRepository;
+import ru.itis.zagidullina.readl.repositories.GenreRepository;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
+    private GenreRepository genreRepository;
     private Validator validator;
 
     private String storagePath;
 
-    public BookServiceImpl(BookRepository bookRepository, Validator validator, String storagePath){
+    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, Validator validator, String storagePath){
         this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
         this.validator = validator;
         this.storagePath = storagePath;
     }
 
     @Override
-    public void save(AddBookForm addBookForm, Account account, InputStream fileInputStream) {
+    public void saveBook(AddBookForm addBookForm, Account account, InputStream fileInputStream) {
         if(validator.isNull(addBookForm.getName()) || validator.isEmpty(addBookForm.getName())){
             throw new EmptyFieldException("Введите название книги");
         }
@@ -46,7 +49,7 @@ public class BookServiceImpl implements BookService {
         String imagePath = null;
 
         if(addBookForm.getSize() != 0){
-            imagePath = saveImage(addBookForm.getImageName(), pathToBook, fileInputStream);
+            imagePath = uploadFile(addBookForm.getImageName(), pathToBook, fileInputStream);
         }
 
         Book book = Book.builder()
@@ -59,9 +62,27 @@ public class BookServiceImpl implements BookService {
                 .numberOfReviews(0)
                 .pathToDirectoryWithContent(pathToBook)
                 .rate(0.0)
+                .genres(getGenresFromId(addBookForm.getGenres()))
                 .build();
 
-        bookRepository.save(book);
+        bookRepository.saveBook(book);
+    }
+
+    @Override
+    public void saveChapter(Chapter chapter, InputStream fileInputStream) {
+        if(validator.isNull(chapter.getName()) || validator.isEmpty(chapter.getName())){
+            throw new EmptyFieldException("Введите название главы");
+        }
+
+        if(chapter.getSize() == 0){
+            throw new NullPointerException("Загрузите файл с главой");
+        }
+
+        String bookDirectoryPath = bookRepository.getPathOfBookDirectory(chapter.getBook().getId());
+        String chapterPath = uploadFile(chapter.getName(), bookDirectoryPath, fileInputStream);
+        chapter.setContentPath(chapterPath);
+
+        bookRepository.saveChapter(chapter);
     }
 
     @Override
@@ -79,8 +100,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBooksOfAccount(id);
     }
 
-    @Override
-    public String saveImage(String fileName, String directoryPath, InputStream fileInputStream) {
+    public String uploadFile(String fileName, String directoryPath, InputStream fileInputStream) {
         String name = getUniqName(fileName);
 
         try{
@@ -100,5 +120,27 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Genre> getAllGenres() {
+        return genreRepository.findAll();
+    }
+
+    private List<Genre> getGenresFromId(String[] ids) {
+        try {
+            List<Genre> genres = new ArrayList<>();
+
+            for (String id : ids) {
+                Genre genre = Genre.builder()
+                        .id(Integer.valueOf(id))
+                        .build();
+                genres.add(genre);
+            }
+
+            return genres;
+        }catch (NullPointerException e) {
+            return null;
+        }
     }
 }

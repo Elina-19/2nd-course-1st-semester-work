@@ -1,21 +1,27 @@
 package ru.itis.zagidullina.readl.repositories;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.itis.zagidullina.readl.models.Book;
 import ru.itis.zagidullina.readl.models.Chapter;
 
 import javax.sql.DataSource;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ChapterRepositoryImpl implements ChapterRepository {
 
     //language=SQL
     private static final String SQL_GET_CHAPTERS_OF_BOOK = "select id, name, book_id, content_path, mime_type from chapter " +
             "where chapter.book_id = :bookId";
+
+    //language=SQL
+    private static final String SQL_SAVE_CHAPTER = "insert into chapter(name, book_id, content_path, mime_type) values " +
+            "(:name, :bookId, :contentPath, :mimeType)";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -42,6 +48,16 @@ public class ChapterRepositoryImpl implements ChapterRepository {
 
     @Override
     public void save(Chapter chapter) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", chapter.getName());
+        map.put("bookId", chapter.getBook().getId());
+        map.put("contentPath", chapter.getContentPath());
+        map.put("mimeType", chapter.getMimeType());
 
+        SqlParameterSource parameterSource = new MapSqlParameterSource(map);
+
+        jdbcTemplate.update(SQL_SAVE_CHAPTER, parameterSource, keyHolder, new String[]{"id"});
+        chapter.setId(keyHolder.getKeyAs(Integer.class));
     }
 }

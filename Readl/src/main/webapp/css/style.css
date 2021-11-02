@@ -152,3 +152,7 @@ a{
 .message{
     text-align: center;
 }
+
+.add-chapter{
+    margin: auto;
+}

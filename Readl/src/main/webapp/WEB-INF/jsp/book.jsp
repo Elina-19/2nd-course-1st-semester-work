@@ -49,7 +49,9 @@
                     </div>
                     <c:if test="${book.account.id == accountId}">
                         <div class="mt-5 text-center">
-                            <input class="btn" type="submit" value="Добавить главу">
+                            <button class="btn" type="button">
+                                <a href="<c:url value="/addChapter?id=${book.id}"/>">Добавить главу</a>
+                            </button>
                         </div>
                     </c:if>
                 </div>

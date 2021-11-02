@@ -36,6 +36,8 @@ create table genre(
     name varchar(20)
 );
 
+insert into genre(name) values ('классика');
+
 create table book_genre(
     book_id int,
     foreign key (book_id) references book(id),

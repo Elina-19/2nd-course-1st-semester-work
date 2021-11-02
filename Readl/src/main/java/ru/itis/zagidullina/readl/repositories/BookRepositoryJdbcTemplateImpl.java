@@ -36,6 +36,9 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     private static final String SQL_FIND_BOOKS_OF_ACCOUNT_BY_ID = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book " +
             "where book.account_id = :id";
 
+    //language=SQL
+    private static final String SQL_GET_PATH_OF_BOOK_DIRECTORY = "select path_to_content from book where book.id = :id";
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     private AccountsRepository accountsRepository;
@@ -67,8 +70,12 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
             .numberOfReviews(row.getInt("number_of_reviews"))
             .build();
 
+    private final RowMapper<Book> pathRowMapper = (row, rowNumber) -> Book.builder()
+            .pathToDirectoryWithContent(row.getString("path_to_content"))
+            .build();
+
     @Override
-    public void save(Book book) {
+    public void saveBook(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         Map<String, Object> values = new HashMap<>();
@@ -87,8 +94,7 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
         jdbcTemplate.update(SQL_SAVE, sqlParameterSource, keyHolder, new String[]{"id"});
 
         book.setId(keyHolder.getKeyAs(Integer.class));
-        book.setChapters(new ArrayList<>());
-        book.setComments(new ArrayList<>());
+        genreRepository.saveGenresOfBook(book.getGenres(), book.getId());
     }
 
     @Override
@@ -118,5 +124,15 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         return jdbcTemplate.query(SQL_FIND_ALL, bookRowMapper);
+    }
+
+    @Override
+    public String getPathOfBookDirectory(Integer id) {
+        return jdbcTemplate.queryForObject(SQL_GET_PATH_OF_BOOK_DIRECTORY, Collections.singletonMap("id", id), pathRowMapper).getPathToDirectoryWithContent();
+    }
+
+    @Override
+    public void saveChapter(Chapter chapter) {
+        chapterRepository.save(chapter);
     }
 }

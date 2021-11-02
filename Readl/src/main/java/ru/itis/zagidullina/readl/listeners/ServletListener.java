@@ -43,7 +43,7 @@ public class ServletListener implements ServletContextListener{
         AccountsService usersService = new AccountsServiceImpl(accountsRepository);
         servletContext.setAttribute("usersService", usersService);
 
-        BookService bookService = new BookServiceImpl(bookRepository, validator, storagePath);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, validator, storagePath);
         servletContext.setAttribute("bookService", bookService);
     }
 

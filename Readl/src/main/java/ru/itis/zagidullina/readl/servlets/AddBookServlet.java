@@ -1,12 +1,8 @@
 package ru.itis.zagidullina.readl.servlets;
 
 import ru.itis.zagidullina.readl.dto.AddBookForm;
-import ru.itis.zagidullina.readl.dto.SignInForm;
 import ru.itis.zagidullina.readl.exceptions.EmptyFieldException;
-import ru.itis.zagidullina.readl.exceptions.InvalidEmailException;
-import ru.itis.zagidullina.readl.exceptions.InvalidPasswordException;
 import ru.itis.zagidullina.readl.models.Account;
-import ru.itis.zagidullina.readl.models.Book;
 import ru.itis.zagidullina.readl.services.BookService;
 
 import javax.servlet.ServletConfig;
@@ -32,6 +28,8 @@ public class AddBookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("genres", bookService.getAllGenres());
+
         request.getRequestDispatcher("/WEB-INF/jsp/addBook.jsp").forward(request, response);
     }
 
@@ -44,14 +42,13 @@ public class AddBookServlet extends HttpServlet {
                 .description(request.getParameter("description"))
                 .imageName(part.getSubmittedFileName())
                 .size(part.getSize())
+                .genres(request.getParameterValues("genre"))
                 .build();
 
         Account account = (Account) request.getSession().getAttribute("account");
 
-        System.out.println(addBookForm.getName());
-        System.out.println(addBookForm.getDescription());
         try{
-            bookService.save(addBookForm, account, part.getInputStream());
+            bookService.saveBook(addBookForm, account, part.getInputStream());
             response.sendRedirect(servletContext.getContextPath() + "/profile");
         }catch (EmptyFieldException e){
             request.setAttribute("error", e.getMessage());
