@@ -9,10 +9,10 @@ import ru.itis.zagidullina.readl.models.Genre;
 import ru.itis.zagidullina.readl.repositories.BookRepository;
 import ru.itis.zagidullina.readl.repositories.GenreRepository;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +141,38 @@ public class BookServiceImpl implements BookService {
             return genres;
         }catch (NullPointerException e) {
             return null;
+        }
+    }
+
+    @Override
+    public Chapter getChapterById(Integer id) {
+        Optional<Chapter> optionalChapter = bookRepository.getChapterById(id);
+
+        if(optionalChapter.isPresent()){
+            Chapter chapter = optionalChapter.get();
+            chapter.setContent(getChapterContent(chapter));
+
+            return chapter;
+        }else throw new IllegalArgumentException("Такой главы нет");
+    }
+
+    private String getChapterContent(Chapter chapter){
+        Path path = Paths.get(storagePath, chapter.getBook().getPathToDirectoryWithContent(), chapter.getContentPath());
+        System.out.println(path.toString());
+        try(BufferedReader br = new BufferedReader(
+                        new InputStreamReader(
+                        new FileInputStream(path.toString()), StandardCharsets.UTF_8))){
+            StringBuilder sb = new StringBuilder();
+            int current;
+
+            while ((current = br.read()) != -1){
+                char a = (char)current;
+                sb.append(a);
+            }
+
+            return sb.toString();
+        }catch (IOException e){
+            throw new IllegalArgumentException("This file doesn't exist");
         }
     }
 }

@@ -135,4 +135,17 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
     public void saveChapter(Chapter chapter) {
         chapterRepository.save(chapter);
     }
+
+    @Override
+    public Optional<Chapter> getChapterById(Integer id) {
+        Optional<Chapter> optionalChapter = chapterRepository.findById(id);
+
+        if (optionalChapter.isPresent()){
+            Chapter chapter = optionalChapter.get();
+            String pathOfBookDirectory = getPathOfBookDirectory(chapter.getBook().getId());
+
+            chapter.getBook().setPathToDirectoryWithContent(pathOfBookDirectory);
+            return Optional.of(chapter);
+        }else return Optional.empty();
+    }
 }

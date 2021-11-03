@@ -1,7 +1,5 @@
 package ru.itis.zagidullina.readl.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.itis.zagidullina.readl.dto.SignInForm;
 import ru.itis.zagidullina.readl.dto.SignUpForm;
 import ru.itis.zagidullina.readl.exceptions.InvalidEmailException;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;

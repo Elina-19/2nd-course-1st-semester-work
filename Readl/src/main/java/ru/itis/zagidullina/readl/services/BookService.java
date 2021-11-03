@@ -18,4 +18,5 @@ public interface BookService {
     //String uploadFile(String fileName, String directoryPath, InputStream inputStream);
     List<Book> findAll();
     List<Genre> getAllGenres();
+    Chapter getChapterById(Integer id);
 }

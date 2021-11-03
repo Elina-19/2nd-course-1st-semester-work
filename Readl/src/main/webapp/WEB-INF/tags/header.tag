@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<head>
+<header>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="<c:url value="/main"/>">Readl</a>
@@ -39,4 +39,4 @@
             </div>
         </div>
     </nav>
-</head>
+</header>

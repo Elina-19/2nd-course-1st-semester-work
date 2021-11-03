@@ -50,7 +50,7 @@ public class AddChapter extends HttpServlet {
                     .build();
 
             bookService.saveChapter(chapter, part.getInputStream());
-            response.sendRedirect(servletContext.getContextPath() + "/book?=" + bookId);
+            response.sendRedirect(servletContext.getContextPath() + "/book?id=" + bookId);
         }catch (EmptyFieldException e){
             request.setAttribute("error", e.getMessage());
             request.setAttribute("bookId", bookId);

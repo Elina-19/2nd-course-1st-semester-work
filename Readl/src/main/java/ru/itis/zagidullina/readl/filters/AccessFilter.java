@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AccessFilter implements Filter {
 
     private ServletContext servletContext;
-    private final String[] availablePaths = {"/signIn", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
+    private final String[] availablePaths = {"/signIn", "/chapter", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

@@ -64,7 +64,9 @@
             <c:if test="${book.chapters != null}">
                 <div>
                     <c:forEach items="${book.chapters}" var="chapter">
-                        <h1 class="chapter">${chapter.name}</h1>
+                        <button class="chapter" type="button">
+                            <a href="<c:url value="/chapter?id=${chapter.id}"/>">${chapter.name}</a>
+                        </button>
                     </c:forEach>
                 </div>
             </c:if>

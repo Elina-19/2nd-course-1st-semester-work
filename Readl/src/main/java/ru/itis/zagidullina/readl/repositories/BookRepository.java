@@ -13,4 +13,5 @@ public interface BookRepository {
     List<Book> findAll();
     String getPathOfBookDirectory(Integer id);
     void saveChapter(Chapter chapter);
+    Optional<Chapter> getChapterById(Integer id);
 }
