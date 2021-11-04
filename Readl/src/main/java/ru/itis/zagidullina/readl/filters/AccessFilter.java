@@ -1,7 +1,5 @@
 package ru.itis.zagidullina.readl.filters;
 
-import ru.itis.zagidullina.readl.services.BookService;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +11,8 @@ import java.io.IOException;
 public class AccessFilter implements Filter {
 
     private ServletContext servletContext;
-    private final String[] availablePaths = {"/signIn", "/chapter", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
-
+    //private final String[] availablePaths = {"/signIn", "/chapter", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
+    private final String[] closedPaths = {"/profile", "/addChapter", "/addBook", "/myBooks"};
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         servletContext = filterConfig.getServletContext();
@@ -37,18 +35,19 @@ public class AccessFilter implements Filter {
         }
         request.setAttribute("authenticated", isAuthenticated);
 
-        for (String path: availablePaths) {
+        for (String path: closedPaths) {
             if (path.equals(currentPath)){
-                filterChain.doFilter(request, response);
-                return;
+                if (isAuthenticated){
+                    filterChain.doFilter(request, response);
+                    return;
+                }else{
+                    response.sendRedirect(servletContext.getContextPath() + "/main");
+                    return;
+                }
             }
         }
 
-        if (isAuthenticated){
-            filterChain.doFilter(request, response);
-        }else{
-            response.sendRedirect(servletContext.getContextPath() + "/main");
-        }
+        filterChain.doFilter(request, response);
     }
 
     @Override

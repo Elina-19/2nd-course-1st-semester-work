@@ -45,6 +45,9 @@ public class ServletListener implements ServletContextListener{
 
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, validator, storagePath);
         servletContext.setAttribute("bookService", bookService);
+
+        RateService rateService = new RateServiceImpl(reviewsRepository);
+        servletContext.setAttribute("rateService", rateService);
     }
 
     @Override

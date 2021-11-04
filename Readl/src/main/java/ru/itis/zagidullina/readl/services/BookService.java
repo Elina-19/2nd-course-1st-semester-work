@@ -7,6 +7,7 @@ import ru.itis.zagidullina.readl.models.Chapter;
 import ru.itis.zagidullina.readl.models.Genre;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,5 @@ public interface BookService {
     List<Book> findAll();
     List<Genre> getAllGenres();
     Chapter getChapterById(Integer id);
+    OutputStream downloadImage(Book book, OutputStream fileOutputStream);
 }

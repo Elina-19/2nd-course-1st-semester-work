@@ -17,7 +17,17 @@
     <div class="book">
         <div class="row">
             <div class="col-md-4 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span> </span></div>
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <iframe class="d-flex mt-5 image-book" scrolling="no" src="<c:url value="/downloadImage?id=${book.id}"/>"></iframe>
+                    <div class="row">
+                        <div class="btn mt-5 text-center col-6" type="button">
+                            <a href="<c:url value="/reviews?id=${book.id}"/>">Рецензии</a>
+                        </div>
+                        <div class="btn mt-5 text-center col-6" type="button">
+                            <a href="<c:url value="/bookComments?id=${book.id}"/>">Комментарии</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-8 border-right">
                 <div class="p-3 py-5">
@@ -34,18 +44,6 @@
                                 <h6>${genre.name}</h6>
                             </c:forEach>
                         </c:if>
-                    </div>
-                    <div class="book-buttons row mt-5">
-                        <div class="col-md-4">
-                            <button class="btn" type="button">
-                                <a href="<c:url value="/reviews?id=${book.id}"/>">Рецензии</a>
-                            </button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn" type="button">
-                                <a href="<c:url value="/bookComments?id=${book.id}"/>">Комментарии</a>
-                            </button>
-                        </div>
                     </div>
                     <c:if test="${book.account.id == accountId}">
                         <div class="mt-5 text-center">

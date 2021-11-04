@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-4">
                         <button class="btn" type="button">
-                            <a href="<c:url value="/myBooks?id=${account.id}"/>" id="myBook">Мои книги</a>
+                            <a href="<c:url value="/myBooks"/>" id="myBook">Мои книги</a>
                         </button>
                     </div>
                 </div>

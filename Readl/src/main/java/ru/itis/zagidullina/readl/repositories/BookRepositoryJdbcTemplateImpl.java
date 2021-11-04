@@ -60,7 +60,7 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
             .id(row.getInt("id"))
             .name(row.getString("name"))
             .account(Account.builder().id(row.getInt("account_id")).build())
-            .pathToDirectoryWithContent("path_to_content")
+            .pathToDirectoryWithContent(row.getString("path_to_content"))
             .imagePath(row.getString("image_path"))
             .dateOfAdding(row.getTimestamp("date_add"))
             .description(row.getString("description"))

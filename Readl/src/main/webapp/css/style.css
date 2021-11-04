@@ -9,6 +9,7 @@
 }
 
 .userIcon{
+    margin-top: 10px;
     margin-left: 5px;
     height: 20px;
 }
@@ -67,7 +68,8 @@ a{
 }
 
 .book-describe{
-    padding-left: 5px;
+    padding-left: 10px;
+    padding-right: 10px;;
 	word-break: break-all;
 	font-size: 1.1em;
 	text-align: justify;
@@ -155,4 +157,9 @@ a{
 
 .add-chapter{
     margin: auto;
+}
+
+.image-book{
+    height: 250px;
+    width: 180px;
 }

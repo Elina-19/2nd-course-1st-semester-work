@@ -175,4 +175,18 @@ public class BookServiceImpl implements BookService {
             throw new IllegalArgumentException("This file doesn't exist");
         }
     }
+
+    @Override
+    public OutputStream downloadImage(Book book, OutputStream fileOutputStream) {
+        if (book.getImagePath() == null){
+            return null;
+        }
+
+        try{
+            Files.copy(Paths.get(storagePath, book.getPathToDirectoryWithContent(), book.getImagePath()), fileOutputStream);
+            return fileOutputStream;
+        }catch (IOException e){
+            throw new IllegalArgumentException("File doesn't exist");
+        }
+    }
 }

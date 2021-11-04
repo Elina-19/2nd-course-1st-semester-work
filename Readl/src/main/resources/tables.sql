@@ -60,4 +60,15 @@ select id, name, account_id, path_to_content, image_path, date_add, description,
 
 update account set uuid = :uuid where account.email = :email;
 
+create table review(
+    id serial primary key,
+    date timestamp,
+    account_id int,
+    foreign key (account_id) references account(id),
+    book_id int,
+    foreign key (book_id) references book(id),
+    content text
+);
+
+insert into review(date, account_id, book_id, content) values (now(), :accountId, :bookId, :content);
 drop table account;

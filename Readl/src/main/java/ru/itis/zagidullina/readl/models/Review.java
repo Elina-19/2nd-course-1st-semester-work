@@ -13,6 +13,5 @@ public class Review {
     private Date date;
     private Account account;
     private Book book;
-    private Double rate;
-    private String contentPath;
+    private String content;
 }

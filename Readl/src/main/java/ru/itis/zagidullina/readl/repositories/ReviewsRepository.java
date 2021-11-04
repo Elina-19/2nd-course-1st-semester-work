@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ReviewsRepository {
     void save(Review review);
-    List<Review> getReviewsOfBook(Integer id);
+    List<Review> getReviewsOfBook(Integer id, Integer count);
 }
