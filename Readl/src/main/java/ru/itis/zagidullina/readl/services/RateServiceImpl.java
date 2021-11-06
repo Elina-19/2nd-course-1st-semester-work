@@ -1,6 +1,8 @@
 package ru.itis.zagidullina.readl.services;
 
+import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.models.Review;
+import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 import ru.itis.zagidullina.readl.repositories.ReviewsRepository;
 
 import java.util.List;
@@ -8,9 +10,11 @@ import java.util.List;
 public class RateServiceImpl implements RateService {
 
     private ReviewsRepository reviewsRepository;
+    private AccountsRepository accountsRepository;
 
-    public RateServiceImpl(ReviewsRepository reviewsRepository){
+    public RateServiceImpl(ReviewsRepository reviewsRepository, AccountsRepository accountsRepository){
         this.reviewsRepository = reviewsRepository;
+        this.accountsRepository = accountsRepository;
     }
 
     @Override
@@ -25,6 +29,12 @@ public class RateServiceImpl implements RateService {
         if (reviews.size() == 0){
             return null;
         }
-        else return reviews;
+        else {
+            for (Review review: reviews){
+                Account account = accountsRepository.findById(review.getAccount().getId()).get();
+                review.setAccount(account);
+            }
+            return reviews;
+        }
     }
 }

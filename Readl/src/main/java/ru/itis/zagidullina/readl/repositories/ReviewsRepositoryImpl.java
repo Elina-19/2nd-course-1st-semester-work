@@ -32,6 +32,7 @@ public class ReviewsRepositoryImpl implements ReviewsRepository {
             .account(Account.builder()
                     .id(row.getInt("account_id"))
                     .build())
+            .date(row.getTimestamp("date"))
             .build();
 
     public ReviewsRepositoryImpl(DataSource dataSource){

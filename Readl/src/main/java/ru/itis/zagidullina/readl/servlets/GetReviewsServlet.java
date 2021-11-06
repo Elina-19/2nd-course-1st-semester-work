@@ -46,14 +46,14 @@ public class GetReviewsServlet extends HttpServlet {
         Integer count = Integer.valueOf(request.getParameter("count"));
 
         List<Review> reviews = rateService.getReviewsOfBook(bookId, count);
-        System.out.println(reviews);
 
         if (reviews != null) {
             for (Review review : reviews) {
                 JsonObject object = new JsonObject();
                 object.addProperty("id", review.getId());
-                object.addProperty("authorId", review.getAccount().getId());
+                object.addProperty("nickname", review.getAccount().getNickname());
                 object.addProperty("content", review.getContent());
+                object.addProperty("date", review.getDate().toString());
 
                 array.add(object);
             }
@@ -61,6 +61,6 @@ public class GetReviewsServlet extends HttpServlet {
 
             response.setContentType("application/json");
             response.getWriter().write(str);
-        }else response.getWriter().write("empty");
+        }else response.getWriter().write("no reviews");
     }
 }

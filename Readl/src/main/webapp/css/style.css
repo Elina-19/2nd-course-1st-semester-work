@@ -163,3 +163,13 @@ a{
     height: 250px;
     width: 180px;
 }
+
+.reviews{
+    margin: 0px 10%;
+}
+
+.review{
+    border: 3px solid #f5a82c;
+    padding: 5px 10px;
+    margin: 20px 0px;
+}
