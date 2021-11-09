@@ -1,5 +1,8 @@
 package ru.itis.zagidullina.readl.filters;
 
+import ru.itis.zagidullina.readl.models.Account;
+import ru.itis.zagidullina.readl.services.AuthService;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +15,13 @@ public class AccessFilter implements Filter {
 
     private ServletContext servletContext;
     //private final String[] availablePaths = {"/signIn", "/chapter", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
-    private final String[] closedPaths = {"/profile", "/addChapter", "/addBook", "/myBooks"};
+    private final String[] closedPaths = {"/profile", "/addChapter", "/addBook", "/myBooks", "/favourite"};
+    private AuthService authService;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         servletContext = filterConfig.getServletContext();
+        authService = (AuthService) servletContext.getAttribute("authService");
     }
 
     @Override
@@ -24,15 +30,29 @@ public class AccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String currentPath = request.getRequestURI().substring(servletContext.getContextPath().length());
+        HttpSession session = request.getSession();
 
-        HttpSession session = request.getSession(false);
+        if (authService.authenticateByToken(request, response)){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
+        Account account = (Account) session.getAttribute("account");
         Boolean isAuthenticated;
-        try{
-            isAuthenticated = (boolean)session.getAttribute("isAuthenticated");
-        }catch(NullPointerException e){
+
+        if (account != null){
+            isAuthenticated = true;
+        }else {
             isAuthenticated = false;
         }
+
+//        Boolean isAuthenticated;
+//        try{
+//            isAuthenticated = (boolean) session.getAttribute("account");
+//            //isAuthenticated = (boolean)session.getAttribute("isAuthenticated");
+//        }catch(NullPointerException e){
+//            isAuthenticated = false;
+//        }
         request.setAttribute("authenticated", isAuthenticated);
 
         for (String path: closedPaths) {

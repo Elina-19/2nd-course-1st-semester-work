@@ -44,7 +44,7 @@ public class SignInServlet extends HttpServlet {
         try{
             Account account = authService.signIn(signInForm);
             HttpSession httpSession = request.getSession(true);
-            httpSession.setAttribute("isAuthenticated", true);
+            //httpSession.setAttribute("isAuthenticated", true);
 
             account.setUuid(httpSession.getId());
             authService.updateUuid(account.getEmail(), httpSession.getId());

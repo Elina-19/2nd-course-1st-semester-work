@@ -17,20 +17,23 @@ import java.util.*;
 public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
 
     //language=SQl
-    private static final String SQL_SAVE_ACCOUNT = "insert into account(nickname, email, password) " +
-            "values(:nickname, :email, :password)";
+    private static final String SQL_SAVE_ACCOUNT = "insert into account(nickname, email, password, token) " +
+            "values(:nickname, :email, :password, :token)";
 
     //language=SQL
-    private static final String SQL_FIND_BY_EMAIl = "select id, uuid, nickname, email, password, image_path from account where account.email = :email";
+    private static final String SQL_FIND_BY_EMAIl = "select id, uuid, nickname, email, password, image_path, token from account where account.email = :email";
 
     //language=SQL
-    private static final String SQL_FIND_BY_ID = "select id, uuid, nickname, email, password, image_path from account where account.id = :id";
+    private static final String SQL_FIND_BY_ID = "select id, uuid, nickname, email, password, image_path, token from account where account.id = :id";
 
     //language=SQL
     private static final String SQL_SELECT_ALL = "select * from account order by id";
 
     //language=SQL
     private static final String SQL_UPDATE_UUID = "update account set uuid = :uuid where account.email = :email";
+
+    //language=SQL
+    private static final String SQL_FIND_BY_TOKEN = "select id, uuid, nickname, email, password, image_path from account where account.token = :token";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -54,6 +57,7 @@ public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
         values.put("nickname", account.getNickname());
         values.put("email", account.getEmail());
         values.put("password", account.getPassword());
+        values.put("token", account.getToken());
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(values);
 
@@ -80,6 +84,17 @@ public class AccountsRepositoryJdbcTemplateImpl implements AccountsRepository{
         try{
             return Optional.of(namedParameterJdbcTemplate.queryForObject(SQL_FIND_BY_ID,
                     Collections.singletonMap("id", id), accountRowMapper));
+        }
+        catch (EmptyResultDataAccessException e){
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Account> findByToken(String token) {
+        try{
+            return Optional.of(namedParameterJdbcTemplate.queryForObject(SQL_FIND_BY_TOKEN,
+                    Collections.singletonMap("token", token), accountRowMapper));
         }
         catch (EmptyResultDataAccessException e){
             return Optional.empty();

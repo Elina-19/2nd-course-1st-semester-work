@@ -36,11 +36,12 @@ public class ServletListener implements ServletContextListener{
         GenreRepository genreRepository = new GenreRepositoryImpl(springContext.getBean(HikariDataSource.class));
 
         BookRepository bookRepository = new BookRepositoryJdbcTemplateImpl(springContext.getBean(HikariDataSource.class), accountsRepository, chapterRepository, commentsRepository, reviewsRepository, genreRepository);
+        FavouriteRepository favouriteRepository = new FavouriteRepositoryImpl(springContext.getBean(HikariDataSource.class), bookRepository);
 
         AuthService authService = new AuthServiceImpl(accountsRepository, validator);
         servletContext.setAttribute("authService", authService);
 
-        AccountsService usersService = new AccountsServiceImpl(accountsRepository);
+        AccountsService usersService = new AccountsServiceImpl(accountsRepository, favouriteRepository);
         servletContext.setAttribute("usersService", usersService);
 
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, validator, storagePath);
@@ -48,6 +49,9 @@ public class ServletListener implements ServletContextListener{
 
         RateService rateService = new RateServiceImpl(reviewsRepository, accountsRepository);
         servletContext.setAttribute("rateService", rateService);
+
+        VkService vkService = new VkServiceImpl(accountsRepository);
+        servletContext.setAttribute("vkService", vkService);
     }
 
     @Override

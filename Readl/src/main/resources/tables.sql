@@ -4,7 +4,8 @@ create table account(
     email varchar(100),
     password varchar(50),
     image_path varchar(50),
-    uuid varchar(50)
+    uuid varchar(50),
+    token varchar(50)
 );
 
 create table book(
@@ -43,6 +44,14 @@ create table book_genre(
     foreign key (book_id) references book(id),
     genre_id int,
     foreign key (genre_id) references genre(id)
+);
+
+create table favourite(
+    account_id int,
+    foreign key (account_id) references account(id),
+    book_id int,
+    foreign key (book_id) references book(id),
+    status varchar(20)
 );
 
 select g.id, g.name from genre g

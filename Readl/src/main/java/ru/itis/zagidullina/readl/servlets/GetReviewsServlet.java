@@ -29,15 +29,6 @@ public class GetReviewsServlet extends HttpServlet {
         gson = new Gson();
     }
 
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        JsonObject object = new JsonObject();
-//        object.addProperty("name", "hey");
-//        object.addProperty("comment", "hehfuwahfj");
-//        System.out.println(object.getAsString());
-//        response.getWriter().write(object.getAsString());
-//    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JsonArray array = new JsonArray();

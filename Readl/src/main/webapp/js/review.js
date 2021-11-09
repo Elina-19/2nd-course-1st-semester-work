@@ -32,6 +32,7 @@ function getReviews() {
         if(xhr.readyState == 4) {
             if(xhr.status == 200) {
                 var data = xhr.responseText;
+
                 if(data != "no reviews") {
                     data = JSON.parse(data);
 

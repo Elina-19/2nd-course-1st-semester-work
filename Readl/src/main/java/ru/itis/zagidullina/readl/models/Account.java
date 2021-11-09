@@ -19,6 +19,7 @@ public class Account {
     private String password;
     private String imagePath;
     private String uuid;
+    private String token;
 
     private List<Account> followers;
     private List<Account> following;

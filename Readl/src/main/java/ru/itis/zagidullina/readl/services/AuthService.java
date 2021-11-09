@@ -4,6 +4,8 @@ import ru.itis.zagidullina.readl.dto.SignInForm;
 import ru.itis.zagidullina.readl.dto.SignUpForm;
 import ru.itis.zagidullina.readl.models.Account;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public interface AuthService {
@@ -11,4 +13,5 @@ public interface AuthService {
     void signUp(SignUpForm signUpForm);
     void logout(HttpSession session);
     void updateUuid(String email, String uuid);
+    boolean authenticateByToken(HttpServletRequest request, HttpServletResponse response);
 }

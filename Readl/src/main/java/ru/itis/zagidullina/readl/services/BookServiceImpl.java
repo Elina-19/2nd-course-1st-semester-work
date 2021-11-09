@@ -106,7 +106,7 @@ public class BookServiceImpl implements BookService {
         try{
             Files.copy(fileInputStream, Paths.get(storagePath, directoryPath, name));
         }catch (IOException e){
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("File doesn't exist", e);
         }
 
         return name;
@@ -158,7 +158,7 @@ public class BookServiceImpl implements BookService {
 
     private String getChapterContent(Chapter chapter){
         Path path = Paths.get(storagePath, chapter.getBook().getPathToDirectoryWithContent(), chapter.getContentPath());
-        System.out.println(path.toString());
+
         try(BufferedReader br = new BufferedReader(
                         new InputStreamReader(
                         new FileInputStream(path.toString()), StandardCharsets.UTF_8))){
@@ -172,7 +172,7 @@ public class BookServiceImpl implements BookService {
 
             return sb.toString();
         }catch (IOException e){
-            throw new IllegalArgumentException("This file doesn't exist");
+            throw new IllegalArgumentException("File doesn't exist", e);
         }
     }
 
@@ -186,7 +186,7 @@ public class BookServiceImpl implements BookService {
             Files.copy(Paths.get(storagePath, book.getPathToDirectoryWithContent(), book.getImagePath()), fileOutputStream);
             return fileOutputStream;
         }catch (IOException e){
-            throw new IllegalArgumentException("File doesn't exist");
+            throw new IllegalArgumentException("File doesn't exist", e);
         }
     }
 }

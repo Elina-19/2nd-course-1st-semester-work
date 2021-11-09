@@ -22,9 +22,13 @@
                     <h4 class="your-profile">Ваш профиль</h4>
                 </div>
                 <div class="profile-buttons row mt-2">
-                    <div class="col-md-4"><label class="labels"></label><button class="btn">Favourite</button></div>
-                    <div class="col-md-4"><label class="labels"></label><button class="btn">Followers</button></div>
-                    <div class="col-md-4"><label class="labels"></label><button class="btn">Followers</button></div>
+                    <div class="col-md-4">
+                        <button class="btn">
+                            <a href="<c:url value="/favourite"/>">Избранное</a>
+                        </button>
+                    </div>
+                    <div class="col-md-4"><button class="btn">Followers</button></div>
+                    <div class="col-md-4"><button class="btn">Followers</button></div>
                 </div>
                 <div class="profile-book-buttons row mt-4">
                     <div class="col-md-4">

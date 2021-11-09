@@ -1,15 +1,14 @@
-package ru.itis.zagidullina.readl.services;
+package ru.itis.zagidullina.readl.repositories;
 
 import ru.itis.zagidullina.readl.models.Account;
+import ru.itis.zagidullina.readl.models.Book;
 import ru.itis.zagidullina.readl.models.Favourite;
 
 import java.util.List;
 
-public interface AccountsService {
-    Account findByEmail(String email);
-    List<Account> findAll();
+public interface FavouriteRepository {
     void addToFavourite(Account account, Integer bookId);
     void deleteFromFavourite(Account account, Integer bookId);
     Favourite getFavourite(Account account);
-    boolean getStatus(Account account, Integer bookId);
+    String getStatus(Account account, Integer bookId);
 }

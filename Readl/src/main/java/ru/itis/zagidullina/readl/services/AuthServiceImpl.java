@@ -8,6 +8,9 @@ import ru.itis.zagidullina.readl.exceptions.NotAvailablePasswordException;
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
@@ -23,6 +26,7 @@ public class AuthServiceImpl implements AuthService{
     private Validator validator;
 
     private static final Pattern patternEmail = Pattern.compile("[A-Za-z0-9_+-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,6}");
+    private static final String TOKEN_COOKIE = "token";
 
     public AuthServiceImpl(AccountsRepository accountsRepository, Validator validator){
         this.accountsRepository = accountsRepository;
@@ -94,6 +98,8 @@ public class AuthServiceImpl implements AuthService{
     }
 
     private String hashPassword(String password) {
+        password = password + password.substring(0, password.length()/2);
+        
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
@@ -101,14 +107,34 @@ public class AuthServiceImpl implements AuthService{
             String hashPassword = DatatypeConverter.printHexBinary(digest).toLowerCase();
             return hashPassword;
         }catch (NoSuchAlgorithmException e){
-            System.err.println(e);
+            throw new IllegalArgumentException(e);
         }
-        return null;
+    }
+
+    @Override
+    public boolean authenticateByToken(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie: cookies){
+            if (cookie.getName().equals(TOKEN_COOKIE)){
+                Optional<Account> optionalAccount = accountsRepository.findByToken(cookie.getValue());
+
+                if (optionalAccount.isPresent()){
+                    HttpSession session = request.getSession();
+                    request.setAttribute("authenticated", true);
+                    session.setAttribute("account", optionalAccount.get());
+
+                    return true;
+                }else return false;
+            }
+        }
+
+        return false;
     }
 
     @Override
     public void logout(HttpSession session) {
         session.removeAttribute("account");
-        session.removeAttribute("isAuthenticated");
+        //session.removeAttribute("isAuthenticated");
     }
 }

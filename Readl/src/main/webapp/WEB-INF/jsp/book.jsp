@@ -26,6 +26,11 @@
                         <div class="btn mt-5 text-center col-6" type="button">
                             <a href="<c:url value="/bookComments?id=${book.id}"/>">Комментарии</a>
                         </div>
+                        <c:if test="${authenticated == true}">
+                        <div class="mt-5 text-center col-6">
+                            <input id="button" class="btn" type="submit" value="${status}">
+                        </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -33,7 +38,7 @@
                 <div class="p-3 py-5">
                     <div class="row">
                         <h5 class="col-6">Автор: ${book.account.nickname}</h5>
-                        <h5 class="col-6">${book.dateOfAdding}</h5>
+                        <h5 id="date" class="col-4">${book.dateOfAdding}</h5>
                     </div>
                     <h4 class="name-book">${book.name}</h4>
                     <h2 class="book-describe">${book.description}</h2>
@@ -71,4 +76,11 @@
         </div>
     </div>
     </c:if>
+    <script>
+        date = "${book.dateOfAdding}";
+        document.getElementById("date").innerHTML = date.substring(0, 16);
+        bookId = ${book.id};
+        url = "<c:url value="/favouriteHandler"/>";
+    </script>
+    <script src="<c:url value="/js/addDeleteFavourite.js"/>" charset="utf-8"></script>
 </t:layout>

@@ -11,4 +11,5 @@ public interface AccountsRepository {
     Optional<Account> findByEmail(String email);
     List<Account> findAll();
     void updateUuid(String email, String uuid);
+    Optional<Account> findByToken(String token);
 }

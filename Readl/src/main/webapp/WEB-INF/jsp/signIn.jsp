@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Элина
-  Date: 21.10.2021
-  Time: 13:38
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
@@ -20,6 +13,9 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input id="password" class="form-control" type="password" name="password" placeholder="Password" <c:if test="${not empty password}"> value="<c:out value="${password}"/>"</c:if>>
+            </div>
+            <div>
+                <a href="<c:url value="/signInVk"/>">Войти через vk</a>
             </div>
             <br>
             <input class="btn" type="submit" value="Sign In">
