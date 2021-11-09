@@ -27,10 +27,6 @@
                             <a href="<c:url value="/favourite"/>">Избранное</a>
                         </button>
                     </div>
-                    <div class="col-md-4"><button class="btn">Followers</button></div>
-                    <div class="col-md-4"><button class="btn">Followers</button></div>
-                </div>
-                <div class="profile-book-buttons row mt-4">
                     <div class="col-md-4">
                         <button class="btn" type="button">
                             <a href="<c:url value="/addBook"/>" id="addBook">Добавить книгу</a>

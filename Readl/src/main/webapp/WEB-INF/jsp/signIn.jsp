@@ -18,7 +18,7 @@
                 <a href="<c:url value="/signInVk"/>">Войти через vk</a>
             </div>
             <br>
-            <input class="btn" type="submit" value="Sign In">
+            <input class="btn" type="submit" value="Войти">
         </div>
     </form>
 </t:layout>

@@ -32,11 +32,6 @@ public class AccessFilter implements Filter {
         String currentPath = request.getRequestURI().substring(servletContext.getContextPath().length());
         HttpSession session = request.getSession();
 
-        if (authService.authenticateByToken(request, response)){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         Account account = (Account) session.getAttribute("account");
         Boolean isAuthenticated;
 
@@ -46,13 +41,20 @@ public class AccessFilter implements Filter {
             isAuthenticated = false;
         }
 
-//        Boolean isAuthenticated;
-//        try{
-//            isAuthenticated = (boolean) session.getAttribute("account");
-//            //isAuthenticated = (boolean)session.getAttribute("isAuthenticated");
-//        }catch(NullPointerException e){
-//            isAuthenticated = false;
-//        }
+        if (!isAuthenticated){
+            if (authService.authenticateByToken(request)){
+                request.setAttribute("authenticated", true);
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (authService.authenticateByUUID(request)){
+                request.setAttribute("authenticated", true);
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+
         request.setAttribute("authenticated", isAuthenticated);
 
         for (String path: closedPaths) {

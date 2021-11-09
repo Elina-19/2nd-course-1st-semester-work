@@ -37,11 +37,6 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
     @Override
-    public List<Account> findAll(){
-        return accountsRepository.findAll();
-    }
-
-    @Override
     public void addToFavourite(Account account, Integer bookId) {
         favouriteRepository.addToFavourite(account, bookId);
     }

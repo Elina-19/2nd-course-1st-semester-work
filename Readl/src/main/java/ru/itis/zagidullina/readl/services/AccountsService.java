@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface AccountsService {
     Account findByEmail(String email);
-    List<Account> findAll();
     void addToFavourite(Account account, Integer bookId);
     void deleteFromFavourite(Account account, Integer bookId);
     Favourite getFavourite(Account account);

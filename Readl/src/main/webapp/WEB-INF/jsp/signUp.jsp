@@ -19,7 +19,7 @@
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password" <c:if test="${not empty email}"> value="<c:out value="${email}"/>"</c:if>>
             </div>
             <br>
-            <input type="submit" class="btn" value="Sign Up">
+            <input type="submit" class="btn" value="Создать">
         </div>
     </form>
 </t:layout>

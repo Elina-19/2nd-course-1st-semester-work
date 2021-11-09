@@ -31,16 +31,7 @@ public class SignInVkServlet extends HttpServlet {
 
         if (code != null){
             try {
-                Account account = vkService.signIn(code);
-
-                HttpSession session = request.getSession(true);
-                //session.setAttribute("isAuthenticated", true);
-
-                account.setUuid(session.getId());
-                authService.updateUuid(account.getEmail(), session.getId());
-                session.setAttribute("account", account);
-                Cookie cookie = new Cookie("token", account.getToken());
-                response.addCookie(cookie);
+                vkService.signIn(code, request, response);
 
                 response.sendRedirect(servletContext.getContextPath() + "/profile");
             }catch (IllegalArgumentException e){

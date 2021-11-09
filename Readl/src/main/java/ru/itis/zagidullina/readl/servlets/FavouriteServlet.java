@@ -32,9 +32,10 @@ public class FavouriteServlet extends HttpServlet {
 
         if (favourite == null){
             request.setAttribute("message", "Нет книг в избранном");
+        }else {
+            request.setAttribute("books", favourite.getBooks());
         }
 
-        request.setAttribute("books", favourite.getBooks());
         request.getRequestDispatcher("/WEB-INF/jsp/favourite.jsp").forward(request, response);
     }
 }

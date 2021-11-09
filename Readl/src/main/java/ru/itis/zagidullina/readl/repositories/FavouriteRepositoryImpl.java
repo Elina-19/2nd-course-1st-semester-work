@@ -89,10 +89,8 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         Map<String, Object> map = new HashMap<>();
         map.put("accountId", account.getId());
 
-        List<Integer> bookIds;
-        try {
-            bookIds = jdbcTemplate.query(SQL_SELECT_FAVOURITE_BY_ACCOUNT_ID, map, favouriteRowMapper);
-        }catch (EmptyResultDataAccessException e){
+        List<Integer> bookIds = jdbcTemplate.query(SQL_SELECT_FAVOURITE_BY_ACCOUNT_ID, map, favouriteRowMapper);
+        if (bookIds.size() == 0){
             return null;
         }
 

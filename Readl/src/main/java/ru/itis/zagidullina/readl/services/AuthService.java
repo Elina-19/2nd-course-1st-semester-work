@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public interface AuthService {
-    Account signIn(SignInForm signInForm);
+    Account signIn(SignInForm signInForm, HttpServletRequest request, HttpServletResponse response);
     void signUp(SignUpForm signUpForm);
-    void logout(HttpSession session);
+    void logout(HttpServletRequest request, HttpServletResponse response);
     void updateUuid(String email, String uuid);
-    boolean authenticateByToken(HttpServletRequest request, HttpServletResponse response);
+    boolean authenticateByToken(HttpServletRequest request);
+    boolean authenticateByUUID(HttpServletRequest request);
 }

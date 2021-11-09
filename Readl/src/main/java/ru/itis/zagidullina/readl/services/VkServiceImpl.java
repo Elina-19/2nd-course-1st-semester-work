@@ -1,11 +1,14 @@
 package ru.itis.zagidullina.readl.services;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +29,9 @@ public class VkServiceImpl implements VkService {
     private static final String AUTHORIZATION_PATH = "https://oauth.vk.com/authorize?client_id=" + APP_ID + "&display=page&redirect_uri=" + REDIRECT_URI + "&scope=email&response_type=code&v=" + API_VERSION;
     private static final String GET_TOKEN = "https://oauth.vk.com/access_token?client_id=" + APP_ID + "&client_secret=" + PROTECTED_KEY + "&redirect_uri=" + REDIRECT_URI + "&code=";
 
+    private static final String TOKEN_COOKIE = "token";
+    private static final int AGE_OF_COOKIE = 60*60*24*180;
+
     private AccountsRepository accountsRepository;
     private Gson gson;
 
@@ -39,6 +45,42 @@ public class VkServiceImpl implements VkService {
         return AUTHORIZATION_PATH;
     }
 
+    @Override
+    public Account signIn(String code, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+
+        JsonObject tokenAndId = getJsonToken(code);
+
+        String accessToken = tokenAndId.get("access_token").getAsString();
+        String id = tokenAndId.get("user_id").getAsString();
+        String email = tokenAndId.get("email").getAsString();
+
+        Optional<Account> optionalAccount = accountsRepository.findByEmail(email);
+        Account account;
+
+        if (optionalAccount.isPresent()){
+            account = optionalAccount.get();
+
+        }else {
+            account = getDataByToken(accessToken, id);
+            account.setEmail(email);
+            account.setToken(getToken());
+
+            accountsRepository.save(account);
+        }
+
+        account.setUuid(session.getId());
+        accountsRepository.updateUuid(account.getEmail(), session.getId());
+
+        session.setAttribute("account", account);
+
+        Cookie cookie = new Cookie(TOKEN_COOKIE, account.getToken());
+        cookie.setMaxAge(AGE_OF_COOKIE);
+        response.addCookie(cookie);
+
+        return account;
+    }
+
     private JsonObject getJsonToken(String code) {
         try {
             URLConnection connection = new URL(GET_TOKEN + code).openConnection();
@@ -49,26 +91,6 @@ public class VkServiceImpl implements VkService {
         }catch (IOException e){
             throw new IllegalArgumentException("Problems with connection", e);
         }
-    }
-
-    @Override
-    public Account signIn(String code) {
-        JsonObject tokenAndId = getJsonToken(code);
-        String accessToken = tokenAndId.get("access_token").getAsString();
-        String id = tokenAndId.get("user_id").getAsString();
-        String email = tokenAndId.get("email").getAsString();
-
-        Optional<Account> optionalAccount = accountsRepository.findByEmail(email);
-        if (optionalAccount.isPresent()){
-            return optionalAccount.get();
-        }
-
-        Account account = getDataByToken(accessToken, id);
-        account.setEmail(email);
-        account.setToken(UUID.randomUUID().toString());
-
-        accountsRepository.save(account);
-        return account;
     }
 
     private Account getDataByToken(String accessToken, String id){
@@ -92,5 +114,9 @@ public class VkServiceImpl implements VkService {
                 .build();
 
         return account;
+    }
+
+    private String getToken(){
+        return UUID.randomUUID().toString();
     }
 }

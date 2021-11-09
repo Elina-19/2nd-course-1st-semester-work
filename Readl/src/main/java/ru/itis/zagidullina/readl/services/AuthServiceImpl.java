@@ -23,18 +23,22 @@ import java.util.regex.Pattern;
 public class AuthServiceImpl implements AuthService{
 
     private AccountsRepository accountsRepository;
+    private VkService vkService;
     private Validator validator;
 
     private static final Pattern patternEmail = Pattern.compile("[A-Za-z0-9_+-]+@[A-Za-z0-9]+\\.[A-Za-z]{2,6}");
     private static final String TOKEN_COOKIE = "token";
+    private static final String UUID_COOKIE = "uuid";
+    private static final int AGE_OF_COOKIE = 60*60*24*180;
 
-    public AuthServiceImpl(AccountsRepository accountsRepository, Validator validator){
+    public AuthServiceImpl(AccountsRepository accountsRepository, VkService vkService, Validator validator){
         this.accountsRepository = accountsRepository;
+        this.vkService = vkService;
         this.validator = validator;
     }
 
     @Override
-    public Account signIn(SignInForm signInForm) {
+    public Account signIn(SignInForm signInForm, HttpServletRequest request, HttpServletResponse response) {
 
         if(validator.isNull(signInForm.getEmail()) || validator.isEmpty(signInForm.getEmail())){
             throw new NullPointerException("Введите email");
@@ -55,6 +59,17 @@ public class AuthServiceImpl implements AuthService{
         if(!hashPassword(signInForm.getPassword()).equals(account.getPassword())){
             throw new InvalidPasswordException("Неверный пароль");
         }
+
+        HttpSession httpSession = request.getSession(true);
+
+        account.setUuid(httpSession.getId());
+        updateUuid(account.getEmail(), httpSession.getId());
+
+        Cookie cookie = new Cookie(UUID_COOKIE, account.getUuid());
+        cookie.setMaxAge(AGE_OF_COOKIE);
+        response.addCookie(cookie);
+
+        httpSession.setAttribute("account", account);
 
         return account;
     }
@@ -112,7 +127,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public boolean authenticateByToken(HttpServletRequest request, HttpServletResponse response) {
+    public boolean authenticateByToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
         for (Cookie cookie: cookies){
@@ -121,7 +136,6 @@ public class AuthServiceImpl implements AuthService{
 
                 if (optionalAccount.isPresent()){
                     HttpSession session = request.getSession();
-                    request.setAttribute("authenticated", true);
                     session.setAttribute("account", optionalAccount.get());
 
                     return true;
@@ -133,8 +147,55 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void logout(HttpSession session) {
+    public boolean authenticateByUUID(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie: cookies){
+            if (cookie.getName().equals(UUID_COOKIE)){
+                Optional<Account> optionalAccount = accountsRepository.findByUUID(cookie.getValue());
+
+                if (optionalAccount.isPresent()){
+                    HttpSession session = request.getSession();
+                    session.setAttribute("account", optionalAccount.get());
+
+                    return true;
+                }else return false;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+
+        deleteUUID(request, response);
+        deleteToken(request, response);
+        request.setAttribute("authenticated", false);
+
         session.removeAttribute("account");
-        //session.removeAttribute("isAuthenticated");
+    }
+
+    private void deleteToken(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie: cookies){
+            if (cookie.getName().equals(TOKEN_COOKIE)){
+                cookie.setValue(null);
+                response.addCookie(cookie);
+            }
+        }
+    }
+
+    private void deleteUUID(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie: cookies){
+            if (cookie.getName().equals(UUID_COOKIE)){
+                cookie.setValue(null);
+                response.addCookie(cookie);
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package ru.itis.zagidullina.readl.servlets;
 
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.services.AccountsService;
-import ru.itis.zagidullina.readl.services.RateService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/favouriteHandler")
@@ -39,8 +37,5 @@ public class FavouriteHandlerServlet extends HttpServlet {
         if (action.equals(DELETE)){
             accountsService.deleteFromFavourite(account, bookId);
         }
-
-        System.out.println(request.getParameter("action"));
-        System.out.println(request.getParameter("bookId"));
     }
 }

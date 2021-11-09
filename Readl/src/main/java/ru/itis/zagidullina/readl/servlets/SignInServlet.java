@@ -42,14 +42,8 @@ public class SignInServlet extends HttpServlet {
                 .build();
 
         try{
-            Account account = authService.signIn(signInForm);
-            HttpSession httpSession = request.getSession(true);
-            //httpSession.setAttribute("isAuthenticated", true);
+            authService.signIn(signInForm, request, response);
 
-            account.setUuid(httpSession.getId());
-            authService.updateUuid(account.getEmail(), httpSession.getId());
-
-            httpSession.setAttribute("account", account);
             response.sendRedirect(servletContext.getContextPath() + "/profile");
         }catch (NullPointerException e){
             request.setAttribute("error", e.getMessage());
