@@ -1,6 +1,5 @@
 package ru.itis.zagidullina.readl.services;
 
-import com.google.gson.JsonObject;
 import ru.itis.zagidullina.readl.models.Account;
 
 import javax.servlet.http.HttpServletRequest;

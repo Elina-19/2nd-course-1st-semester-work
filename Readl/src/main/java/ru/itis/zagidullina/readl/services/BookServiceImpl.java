@@ -189,4 +189,9 @@ public class BookServiceImpl implements BookService {
             throw new IllegalArgumentException("File doesn't exist", e);
         }
     }
+
+    @Override
+    public List<Book> search(String str) {
+        return bookRepository.search(str);
+    }
 }

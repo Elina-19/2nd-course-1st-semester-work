@@ -162,6 +162,7 @@ a{
 .image-book{
     height: 250px;
     width: 180px;
+    align-content: center;
 }
 
 .reviews{
@@ -171,7 +172,7 @@ a{
 .review{
     border: 3px solid #f5a82c;
     padding: 5px 10px;
-    margin: 20px 0px;
+    margin: 20px 10%;
 }
 
 .chapter-content{

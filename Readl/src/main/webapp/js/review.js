@@ -4,7 +4,8 @@ if (button !== null) {
     button.addEventListener('click', function (e) {
         e.preventDefault();
 
-        var description = document.getElementById('description').value.replace(/[</>]+/, '');
+        var description = document.getElementById('description').value;
+
         if (description.trim() === '') {
             document.getElementById('message').value = 'Заполните поле';
             return false;
@@ -18,6 +19,16 @@ if (button !== null) {
         document.getElementById('description').value = '';
     });
 };
+
+// function handleString(str){
+//     str = str.replace(/</g, '&lt');
+//     str = str.replace(/>/g, '&gt');
+//     str = str.replace(/&/g, '&amp');
+//     str = str.replace(/'/g, '&apos');
+//     str = str.replace(/"/g, '&quot');
+//
+//     return str;
+// }
 
 count = 0;
 getReviews();
@@ -36,9 +47,9 @@ function getReviews() {
                 if(data != "no reviews") {
                     data = JSON.parse(data);
 
-                    var comments = document.getElementById('reviews');
+                    var reviews = document.getElementById('reviews');
                     for(var i = 0; i < data.length; i++) {
-                        comments.appendChild(createReview(data[i]));
+                        reviews.appendChild(createReview(data[i]));
                     }
 
                     if(count < data[data.length-1].id){
@@ -52,7 +63,7 @@ function getReviews() {
     };
     setTimeout(function() {
         getReviews();
-    }, 7000);
+    }, 2000);
 
     createReview = function (element){
         var review = document.createElement('div');

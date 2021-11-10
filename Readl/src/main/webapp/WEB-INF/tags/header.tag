@@ -11,8 +11,8 @@
             </button>
             <div class="actions collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="search">
-                    <form class="d-flex">
-                        <input class="form-control mr-2" type="search" placeholder="Search" name="search">
+                    <form class="d-flex" action="<c:url value="/main"/>" method="post">
+                        <input class="form-control mr-2" type="search" placeholder="Поиск" name="search">
                         <button class="btn" type="submit">Search</button>
                     </form>
                 </div>

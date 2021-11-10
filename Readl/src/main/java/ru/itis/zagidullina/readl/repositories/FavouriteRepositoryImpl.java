@@ -1,6 +1,5 @@
 package ru.itis.zagidullina.readl.repositories;
 
-import com.sun.rowset.internal.Row;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

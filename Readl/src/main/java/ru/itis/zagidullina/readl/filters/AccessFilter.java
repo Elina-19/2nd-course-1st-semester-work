@@ -14,7 +14,6 @@ import java.io.IOException;
 public class AccessFilter implements Filter {
 
     private ServletContext servletContext;
-    //private final String[] availablePaths = {"/signIn", "/chapter", "/signUp", "/logout", "/main", "/book", "/reviews", "/comments"};
     private final String[] closedPaths = {"/profile", "/addChapter", "/addBook", "/myBooks", "/favourite"};
     private AuthService authService;
 

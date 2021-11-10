@@ -7,11 +7,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
-import ru.itis.zagidullina.readl.models.Account;
+
 import ru.itis.zagidullina.readl.models.Book;
 import ru.itis.zagidullina.readl.models.Chapter;
-import ru.itis.zagidullina.readl.models.Genre;
 
 import javax.sql.DataSource;
 import java.util.*;

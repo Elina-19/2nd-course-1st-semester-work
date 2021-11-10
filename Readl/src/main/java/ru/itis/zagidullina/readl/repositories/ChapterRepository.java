@@ -1,6 +1,5 @@
 package ru.itis.zagidullina.readl.repositories;
 
-import ru.itis.zagidullina.readl.models.Book;
 import ru.itis.zagidullina.readl.models.Chapter;
 
 import java.util.List;

@@ -13,12 +13,12 @@
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <iframe class="d-flex mt-5 image-book" scrolling="no" src="<c:url value="/downloadImage?id=${book.id}"/>"></iframe>
                     <div class="row">
-                        <div class="btn mt-5 text-center col-6" type="button">
+                        <div class="btn mt-5 text-center" type="button">
                             <a href="<c:url value="/reviews?id=${book.id}"/>">Рецензии</a>
                         </div>
-                        <div class="btn mt-5 text-center col-6" type="button">
-                            <a href="<c:url value="/bookComments?id=${book.id}"/>">Комментарии</a>
-                        </div>
+<%--                        <div class="btn mt-5 text-center col-6" type="button">--%>
+<%--                            <a href="<c:url value="/bookComments?id=${book.id}"/>">Комментарии</a>--%>
+<%--                        </div>--%>
                         <c:if test="${authenticated == true}">
                         <div class="mt-5 text-center col-6">
                             <input id="button" class="btn" type="submit" value="${status}">

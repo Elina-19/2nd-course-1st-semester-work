@@ -1,21 +1,17 @@
 package ru.itis.zagidullina.readl.repositories;
 
-import com.zaxxer.hikari.HikariDataSource;
+import ru.itis.zagidullina.readl.models.Account;
+import ru.itis.zagidullina.readl.models.Book;
+import ru.itis.zagidullina.readl.models.Chapter;
+import ru.itis.zagidullina.readl.models.Genre;
+
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
-import ru.itis.zagidullina.readl.models.Account;
-import ru.itis.zagidullina.readl.models.Book;
-import ru.itis.zagidullina.readl.models.Chapter;
-import ru.itis.zagidullina.readl.models.Genre;
-import ru.itis.zagidullina.readl.repositories.BookRepository;
-
 import javax.sql.DataSource;
 import java.util.*;
 
@@ -31,6 +27,9 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
 
     //language=SQL
     private static final String SQL_FIND_ALL = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book";
+
+    //language=SQL
+    private static final String SQL_SEARCH = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book where name ~* :regular";
 
     //language=SQL
     private static final String SQL_FIND_BOOKS_OF_ACCOUNT_BY_ID = "select id, name, account_id, path_to_content, image_path, date_add, description, rate, number_of_rates, number_of_comments, number_of_reviews from book " +
@@ -147,5 +146,12 @@ public class BookRepositoryJdbcTemplateImpl implements BookRepository {
             chapter.getBook().setPathToDirectoryWithContent(pathOfBookDirectory);
             return Optional.of(chapter);
         }else return Optional.empty();
+    }
+
+    @Override
+    public List<Book> search(String str) {
+        String regular = ".*" + str + ".*";
+
+        return jdbcTemplate.query(SQL_SEARCH, Collections.singletonMap("regular", regular), bookRowMapper);
     }
 }

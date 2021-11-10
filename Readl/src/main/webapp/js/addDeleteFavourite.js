@@ -7,7 +7,7 @@ if (button !== null) {
         e.preventDefault();
 
         var xhr = new XMLHttpRequest();
-        xhr.open('post', url, true);
+        xhr.open('post', url, false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         if (button.value === add) {

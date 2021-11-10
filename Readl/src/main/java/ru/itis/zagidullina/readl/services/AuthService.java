@@ -6,7 +6,6 @@ import ru.itis.zagidullina.readl.models.Account;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public interface AuthService {
     Account signIn(SignInForm signInForm, HttpServletRequest request, HttpServletResponse response);

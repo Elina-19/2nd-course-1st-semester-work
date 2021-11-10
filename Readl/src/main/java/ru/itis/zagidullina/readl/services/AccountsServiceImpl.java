@@ -1,14 +1,11 @@
 package ru.itis.zagidullina.readl.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.itis.zagidullina.readl.exceptions.InvalidEmailException;
 import ru.itis.zagidullina.readl.models.Account;
 import ru.itis.zagidullina.readl.models.Favourite;
 import ru.itis.zagidullina.readl.repositories.AccountsRepository;
 import ru.itis.zagidullina.readl.repositories.FavouriteRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public class AccountsServiceImpl implements AccountsService {
@@ -55,9 +52,9 @@ public class AccountsServiceImpl implements AccountsService {
     public boolean getStatus(Account account, Integer bookId) {
         String status = favouriteRepository.getStatus(account, bookId);
 
-        if (status == null || status.equals(STATUS_ACTIVE)){
-            return true;
+        if (status == null || status.equals(STATUS_INACTIVE)){
+            return false;
         }
-        else return false;
+        else return true;
     }
 }

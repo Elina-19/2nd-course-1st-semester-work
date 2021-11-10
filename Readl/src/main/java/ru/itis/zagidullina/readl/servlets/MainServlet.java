@@ -29,4 +29,17 @@ public class MainServlet extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Book> books = bookService.search(request.getParameter("search"));
+
+        if (books.size() == 0){
+            request.setAttribute("message", "По вашему запросу результатов не найдено");
+        }else {
+            request.setAttribute("books", books);
+        }
+
+        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
+    }
 }
