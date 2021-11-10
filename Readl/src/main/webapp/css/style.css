@@ -1,0 +1,184 @@
+.btn{
+    margin-left: 10px;
+    margin-right: 5px;
+    background-color:bisque;
+}
+
+.navbar{
+    box-shadow: 0 0 5px;
+}
+
+.userIcon{
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 20px;
+}
+
+.navbar-brand{
+    margin-left: 5%;
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: "CASTELLAR";
+	font-weight: bold;
+	margin: auto;
+	padding-left: 5%;
+}
+
+.navbar{
+    background-color: #c69e6b;
+}
+
+.sign-form{
+    margin: 10% 30%;
+}
+
+a{
+	color: black;
+	text-decoration: none;
+}
+
+.wrapper{
+    margin-top: 7%;
+}
+
+.footer{
+    background-color: #c69e6b;
+    top: 90%;
+    position: relative;
+	box-shadow: 0 0 5px;
+    height: 50%;
+    width: 100%;
+}
+
+.content{
+    border: 3px solid #f5a82c;
+}
+
+.col{
+    align-content: center;
+}
+
+.external-book{
+	overflow: hidden;
+	border: 3px solid #f5a82c;
+	display: flex;
+	font-family: "Arial";
+	margin-bottom: 10px;
+    margin: 10px 10%;
+}
+
+.book-describe{
+    padding-left: 10px;
+    padding-right: 10px;;
+	word-break: break-all;
+	font-size: 1.1em;
+	text-align: justify;
+	text-indent: 10px;
+	margin: 5px 3px 5px 5px;
+}
+.book-img{
+	height: 250px;
+	width: 180px;
+	box-shadow: 0 0 3px;
+}
+.name-of-book{
+	word-break: break-all;
+	padding-left: 3px;
+    border: none;
+    outline: none;
+}
+.name-of-book:hover{
+    text-decoration: underline;
+}
+.actions{
+    margin-left: 50%;
+}
+
+.genre{
+    font-size: 2rem;
+}
+.genres{
+    border: 3px solid #f5a82c;
+    min-width: 200px;
+	width: 20%;
+	padding: 5px 5px;
+}
+
+.your-profile{
+    text-align: center;
+}
+
+.profile-buttons{
+    margin-left: 15%;
+}
+
+.form-add-book{
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 3px solid #f5a82c;
+}
+
+.new-book{
+    text-align: center;
+}
+
+.profile-book-buttons{
+    margin-left: 30%;
+}
+
+.book{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.name-book{
+    text-align: center;
+}
+
+.chapters{
+    padding-left: 30%;
+}
+
+.chapter{
+    font-size: 2rem;
+}
+
+.search{
+    margin-top: 10px;
+}
+
+.book-buttons{
+    margin-left: 15%;
+}
+
+.message{
+    text-align: center;
+}
+
+.add-chapter{
+    margin: auto;
+}
+
+.image-book{
+    height: 250px;
+    width: 180px;
+    align-content: center;
+}
+
+.reviews{
+    margin: 0px 10%;
+}
+
+.review{
+    border: 3px solid #f5a82c;
+    padding: 5px 10px;
+    margin: 20px 10%;
+}
+
+.chapter-content{
+    margin: 0px 10%;
+}
+
+.chapter-buttons{
+    margin: 0% 30%;
+}
